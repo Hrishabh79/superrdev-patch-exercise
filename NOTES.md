@@ -24,10 +24,10 @@
 - Fix: Reset the page to 1 when search or status changes.
 - Why: Prevents empty or incorrect results when the new filter has fewer pages.
 
-## 4. Loading state stuck after API failure
+## 4. Request lifecycle and stale response handling
 - File: frontend/src/hooks/useTasks.js
 - Layer: Frontend
-- Discovery: Code inspection
-- Root cause: The error handler did not reset the loading state.
-- Fix: Clear previous errors on new requests and set loading to false on failure.
-- Why: Keeps the UI responsive when an API request fails.
+- Discovery: Code inspection and UI testing
+- Root cause: The request lifecycle did not fully handle loading/error state and could allow stale responses from previous requests to update the UI.
+- Fix: Clear previous errors when a request starts, use an ignore flag to prevent stale responses, and use finally() to reset loading reliably.
+- Why: Keeps the UI responsive and ensures results from outdated requests do not overwrite the latest request.
